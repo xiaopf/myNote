@@ -14,29 +14,36 @@ class QueryNote extends StatefulWidget {
 
 class _QueryNoteState extends State<QueryNote> {
   List _noteList = [];
+  List _tagList = [];
   String _queryText = '';
   final TextEditingController _controller = TextEditingController();
   @override
   void initState() { 
     super.initState();
     _updateNoteList();
+    _updateTagList();
   }
 
   void _updateNoteList() async{
-    List list = await _readData();
+    List list = await _readData('noteList');
     setState((){
         _noteList = list;
     });
   }
-
-  Future<File> _getLocalFile() async {
+  void _updateTagList() async{
+    List list = await _readData('tagList');
+    setState((){
+        _tagList = list;
+    });
+  }
+  Future<File> _getLocalFile(fileName) async {
     String dir = (await getApplicationDocumentsDirectory()).path;
-    return new File('$dir/noteList.json');
+    return new File('$dir/$fileName.json');
   }
 
-  Future<List> _readData() async{
+  Future<List> _readData(fileName) async{
     try {
-      File file = await _getLocalFile();
+      File file = await _getLocalFile(fileName);
       String data = await file.readAsString();
       List noteList = json.decode(data);
       return noteList;
@@ -105,6 +112,7 @@ class _QueryNoteState extends State<QueryNote> {
             Expanded(
               child: ContentBoxQuery(
                 noteList: filterList(),
+                tagList: _tagList,
                 viewListStyle: widget.viewListStyle,
                 updateNoteList:_updateNoteList
               )

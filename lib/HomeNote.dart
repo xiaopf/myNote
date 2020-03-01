@@ -94,117 +94,122 @@ class _HomeNoteState extends State<HomeNote> {
     _searchController.addListener((){
 
     });
-    return Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: Colors.white,
-      drawer: MyDrawer(),
-      body: Container(
-        padding:EdgeInsets.all(8.0),
-        child: Column(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.fromLTRB(8.0, 50.0, 8.0, 10.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                border: Border.all(
-                  color: Colors.amber,
-                  width: 1,
+    return WillPopScope(
+      onWillPop:(){
+        Navigator.pop(context);
+      },
+      child: Scaffold(
+        key: _scaffoldKey,
+        backgroundColor: Colors.white,
+        drawer: MyDrawer(),
+        body: Container(
+          padding:EdgeInsets.all(8.0),
+          child: Column(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.fromLTRB(8.0, 50.0, 8.0, 10.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                  border: Border.all(
+                    color: Colors.amber,
+                    width: 1,
+                  )
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.menu),
+                      onPressed: () => _scaffoldKey.currentState.openDrawer()
+                    ),
+                    Expanded(
+                      child: TextField(
+                        enableInteractiveSelection: false,
+                        onTap: () async{ 
+                          FocusScope.of(context).requestFocus(new FocusNode());
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => QueryNote(viewListStyle: viewListStyle))
+                          );
+                          // _updateNoteList();
+                        },
+                        decoration: InputDecoration(
+                          labelText: '搜索您的记事',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                        controller: _searchController,
+                      )
+                    ),
+                    IconButton(
+                      icon: viewListStyle ? Icon(Icons.view_list) : Icon(Icons.view_module),
+                      onPressed: (){
+                        setState((){
+                          viewListStyle = !viewListStyle;
+                        });
+                      }
+                    ),
+                  ],
                 )
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.menu),
-                    onPressed: () => _scaffoldKey.currentState.openDrawer()
-                  ),
-                  Expanded(
-                    child: TextField(
-                      enableInteractiveSelection: false,
-                      onTap: () async{ 
-                        FocusScope.of(context).requestFocus(new FocusNode());
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => QueryNote(viewListStyle: viewListStyle))
-                        );
-                        // _updateNoteList();
-                      },
-                      decoration: InputDecoration(
-                        labelText: '搜索您的记事',
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                      controller: _searchController,
-                    )
-                  ),
-                  IconButton(
-                    icon: viewListStyle ? Icon(Icons.view_list) : Icon(Icons.view_module),
-                    onPressed: (){
-                      setState((){
-                        viewListStyle = !viewListStyle;
-                      });
-                    }
-                  ),
-                ],
+              Expanded(
+                child: ContentBox(
+                  noteList: _noteList,
+                  tagList: _tagList,
+                  viewListStyle: viewListStyle,
+                  finishedNote: _finishedNote,
+                  updateNoteList: _updateNoteList
+                )
               )
+            ],
+          ),
+        ),
+        // 暂时注释掉
+        // bottomSheet: Container(
+        //   padding: EdgeInsets.only(bottom: 20.0),
+        //   child:  SizedBox(
+        //   height: 50.0,
+        //   child: Row(
+        //       children: <Widget>[
+        //         IconButton(
+        //           icon: Icon(Icons.check_box),
+        //           onPressed: () => _scaffoldKey.currentState.openDrawer()
+        //         ),
+        //         IconButton(
+        //           icon: Icon(Icons.mic),
+        //           onPressed: () => _scaffoldKey.currentState.openDrawer()
+        //         ),
+        //         IconButton(
+        //           icon: Icon(Icons.photo_size_select_actual),
+        //           onPressed: () => _scaffoldKey.currentState.openDrawer()
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // ),
+        floatingActionButton: Container(
+          padding: EdgeInsets.only(bottom: 15.0, right: 15.0),
+          child: FloatingActionButton(
+            backgroundColor: Colors.white,
+            onPressed: () async{
+              await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Detail())
+              );
+              _updateNoteList();
+            },
+            tooltip: 'newContent',
+            child: Icon(
+              Icons.add,
+              color: Colors.amber,
+              size: 40.0
             ),
-            Expanded(
-              child: ContentBox(
-                noteList: _noteList,
-                tagList: _tagList,
-                viewListStyle: viewListStyle,
-                finishedNote: _finishedNote,
-                updateNoteList: _updateNoteList
-              )
-            )
-          ],
-        ),
-      ),
-      // 暂时注释掉
-      // bottomSheet: Container(
-      //   padding: EdgeInsets.only(bottom: 20.0),
-      //   child:  SizedBox(
-      //   height: 50.0,
-      //   child: Row(
-      //       children: <Widget>[
-      //         IconButton(
-      //           icon: Icon(Icons.check_box),
-      //           onPressed: () => _scaffoldKey.currentState.openDrawer()
-      //         ),
-      //         IconButton(
-      //           icon: Icon(Icons.mic),
-      //           onPressed: () => _scaffoldKey.currentState.openDrawer()
-      //         ),
-      //         IconButton(
-      //           icon: Icon(Icons.photo_size_select_actual),
-      //           onPressed: () => _scaffoldKey.currentState.openDrawer()
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
-      floatingActionButton: Container(
-        padding: EdgeInsets.only(bottom: 15.0, right: 15.0),
-        child: FloatingActionButton(
-        backgroundColor: Colors.white,
-        onPressed: () async{
-          await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Detail())
-          );
-          _updateNoteList();
-        },
-        tooltip: 'newContent',
-        child: Icon(
-          Icons.add,
-          color: Colors.amber,
-          size: 40.0
-        ),
-      ), 
+          ), 
+        )
       )
     );
   }

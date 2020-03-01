@@ -95,40 +95,45 @@ class _TagsState extends State<Tags> {
     _searchController.addListener((){
 
     });
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(
-            Icons.close,
-            color: Colors.black,
-          ),
-          onPressed: (){
-            Navigator.pop(context);
-          },
-        ),
-        title: Text(
-          widget.title,
-          style: TextStyle(color: Colors.black, fontSize: 18.0),
-        ),
-      ),
-      backgroundColor: Colors.white,
-      body: Column(
-        children: <Widget>[
-          CreateTag(
-            addTag: _addTag,
-          ),
-          SizedBox(height: 10.0,),
-          Expanded(
-            child: ListView(
-              key: PageStorageKey(1),
-              shrinkWrap: true,
-              children: _tagWidgetList(),
+    return WillPopScope(
+      onWillPop:(){
+        Navigator.pop(context);
+      },
+      child: Scaffold(
+        key: _scaffoldKey,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: Icon(
+              Icons.close,
+              color: Colors.black,
             ),
+            onPressed: (){
+              Navigator.pop(context);
+            },
           ),
-        ]
+          title: Text(
+            widget.title,
+            style: TextStyle(color: Colors.black, fontSize: 18.0),
+          ),
+        ),
+        backgroundColor: Colors.white,
+        body: Column(
+          children: <Widget>[
+            CreateTag(
+              addTag: _addTag,
+            ),
+            SizedBox(height: 10.0,),
+            Expanded(
+              child: ListView(
+                key: PageStorageKey(1),
+                shrinkWrap: true,
+                children: _tagWidgetList(),
+              ),
+            ),
+          ]
+        )
       )
     );
   }

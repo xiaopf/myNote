@@ -376,7 +376,7 @@ class _DetailState extends State<Detail> with SingleTickerProviderStateMixin{
         ),
         bottomSheet: Container(
           color: Color(preSetColors[_chooseColorIndex]),
-          height: _showBottomMenu ? 160.0 : 70.0,
+          height: _showBottomMenu ? 170.0 : 80.0,
           child: Stack(
             textDirection: TextDirection.ltr,
             children: <Widget>[
@@ -390,17 +390,18 @@ class _DetailState extends State<Detail> with SingleTickerProviderStateMixin{
                       onTap: () async{
                         List choosedTagList = await Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ChooseTags(choosedTagList: []))
+                          MaterialPageRoute(builder: (context) => ChooseTags(choosedTagList: _choosedTagList))
                         );
                         setState(() {
                           _choosedTagList = choosedTagList;
                         });
                       },
                       child: Container(
-                        height: 50.0,
+                        height: 60.0,
                         alignment: Alignment.centerLeft,
                         padding: EdgeInsets.only(left: 12.0, top: 5.0, right: 12.0),
                         decoration: BoxDecoration(
+                          // color: Colors.red,
                           border: Border(
                             top:BorderSide(
                               color: Colors.grey, 

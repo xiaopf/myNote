@@ -6,11 +6,13 @@ class ContentBoxQuery extends StatefulWidget {
   ContentBoxQuery({
     Key key,
     this.noteList,
+    this.tagList,
     this.viewListStyle,
     this.updateNoteList,
   }) : super(key: key);
   
   final List noteList;
+  final List tagList;
   final bool viewListStyle;
   final Function updateNoteList;
   int status;
@@ -33,6 +35,7 @@ class _ContentBoxQueryState extends State<ContentBoxQuery> {
         SingleContent(
           index: note['index'],
           note: note,
+          tagList: widget.tagList,
           updateNoteList: widget.updateNoteList,
           finishedNote: (){},
           deleteNote: (){},
