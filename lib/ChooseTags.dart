@@ -52,7 +52,7 @@ class _ChooseTagsState extends State<ChooseTags> {
   Future<Null> _addTag(tag) async {
     setState(() {
       _tagList.add(tag);
-      _choosedTagList.add(_tagList.length);
+      _choosedTagList.add(_tagList.length-1);
     });
     _controller.text = '';
     await (await _getLocalFile()).writeAsString(json.encode(_tagList));
@@ -147,7 +147,7 @@ class _ChooseTagsState extends State<ChooseTags> {
         ),
         backgroundColor: Colors.white,
         body: Column(
-          children: _queryTag.length == 0 ?
+          children: _queryTag.length == 0 || _tagList.contains(_queryTag)?
           [
             Expanded(
               child: ListView(

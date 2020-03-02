@@ -10,6 +10,7 @@ class SingleContent extends StatefulWidget {
     this.finishedNote,
     this.deleteNote,
     this.recoveryNote,
+    this.updateTagList,
     this.updateNoteList,
     this.disable,
     this.viewListStyle,
@@ -21,6 +22,7 @@ class SingleContent extends StatefulWidget {
   final Function finishedNote;
   final Function deleteNote;
   final Function recoveryNote;
+  final Function updateTagList;
   final Function updateNoteList;
   final bool disable;
   final bool viewListStyle;
@@ -157,6 +159,7 @@ class _SingleContentState extends State<SingleContent> {
                   MaterialPageRoute(builder: (context) => Detail(id: widget.index))
                 );
                 // 更新home页面数据列表
+                widget.updateTagList();
                 widget.updateNoteList();
               },
               child: Container(
@@ -218,7 +221,7 @@ class _SingleContentState extends State<SingleContent> {
             minHeight: widget.viewListStyle ? 110.0 : 0,
           ),
           padding: EdgeInsets.all(6.0),
-          alignment: Alignment.centerLeft,
+          alignment: Alignment.topLeft,
           decoration: BoxDecoration(
             // 从数据中读取出来的颜色
             color: Color(widget.note['bgColor']),

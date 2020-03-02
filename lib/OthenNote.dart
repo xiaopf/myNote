@@ -199,6 +199,7 @@ class _OthenNoteState extends State<OthenNote> {
                 viewListStyle: viewListStyle,
                 deleteNote: _deleteCompletelyNote,
                 recoveryNote: (id){_recoveryNote(id, 1);},
+                updateTagList: _updateTagList,
                 updateNoteList: _updateNoteList,
                 status: 2,
               )
@@ -213,6 +214,7 @@ class _OthenNoteState extends State<OthenNote> {
                 viewListStyle: viewListStyle,
                 deleteNote: _finishedNote,
                 recoveryNote: (id){_recoveryNote(id, 0);},
+                updateTagList: _updateTagList,
                 updateNoteList: _updateNoteList,
                 status: 1,
               )

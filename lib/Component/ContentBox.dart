@@ -8,6 +8,7 @@ class ContentBox extends StatefulWidget {
     this.noteList,
     this.tagList,
     this.viewListStyle,
+    this.updateTagList,
     this.updateNoteList,
     this.finishedNote,
     this.deleteNote,
@@ -18,6 +19,7 @@ class ContentBox extends StatefulWidget {
   final List noteList;
   final List tagList;
   final bool viewListStyle;
+  final Function updateTagList;
   final Function updateNoteList;
   final Function finishedNote;
   final Function deleteNote;
@@ -46,6 +48,7 @@ class _ContentBoxState extends State<ContentBox> {
           finishedNote: widget.finishedNote,
           deleteNote: widget.deleteNote,
           recoveryNote: widget.recoveryNote,
+          updateTagList: widget.updateTagList,
           updateNoteList: widget.updateNoteList,
           disable: false,
           viewListStyle: widget.viewListStyle

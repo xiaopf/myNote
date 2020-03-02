@@ -177,6 +177,7 @@ class _HomeNoteState extends State<HomeNote> {
                   tagList: _tagList,
                   viewListStyle: viewListStyle,
                   finishedNote: _finishedNote,
+                  updateTagList: _updateTagList,
                   updateNoteList: _updateNoteList
                 )
               )
@@ -215,6 +216,7 @@ class _HomeNoteState extends State<HomeNote> {
                 context,
                 MaterialPageRoute(builder: (context) => Detail())
               );
+              _updateTagList();
               _updateNoteList();
             },
             tooltip: 'newContent',

@@ -114,6 +114,7 @@ class _QueryNoteState extends State<QueryNote> {
                 noteList: filterList(),
                 tagList: _tagList,
                 viewListStyle: widget.viewListStyle,
+                updateTagList: _updateTagList,
                 updateNoteList:_updateNoteList
               )
             )

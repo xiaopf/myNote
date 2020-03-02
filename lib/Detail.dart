@@ -221,6 +221,7 @@ class _DetailState extends State<Detail> with SingleTickerProviderStateMixin{
               context,
               MaterialPageRoute(builder: (context) => ChooseTags(choosedTagList: _choosedTagList))
             );
+            _updateTagList();
             setState(() {
               _choosedTagList = choosedTagList;
             });
@@ -419,6 +420,7 @@ class _DetailState extends State<Detail> with SingleTickerProviderStateMixin{
                           context,
                           MaterialPageRoute(builder: (context) => ChooseTags(choosedTagList: _choosedTagList))
                         );
+                        _updateTagList();
                         setState(() {
                           _choosedTagList = choosedTagList;
                         });
