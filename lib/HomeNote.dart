@@ -18,7 +18,7 @@ class HomeNote extends StatefulWidget {
 }
 
 class _HomeNoteState extends State<HomeNote> {
-  bool viewListStyle = true;
+  bool viewListStyle = false;
   List _noteList = [];
   List _tagList = [];
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -32,6 +32,7 @@ class _HomeNoteState extends State<HomeNote> {
     // _delNote('tagList');
     _updateNoteList();
     _updateTagList();
+    _updateViewStyle();
   }
 
   void _updateNoteList() async{
@@ -44,7 +45,14 @@ class _HomeNoteState extends State<HomeNote> {
   void _updateTagList() async{
     List list = await _readData('tagList');
     setState((){
-        _tagList = list;
+      _tagList = list;
+    });
+  }
+
+  void _updateViewStyle() async{
+    List list = await _readData('viewStyle');
+    setState((){
+      viewListStyle = list.length == 0 ? false : list[0]['viewListStyle'];
     });
   }
 
@@ -57,8 +65,8 @@ class _HomeNoteState extends State<HomeNote> {
     try {
       File file = await _getLocalFile(fileName);
       String data = await file.readAsString();
-      List noteList = json.decode(data);
-      return noteList;
+      List list = json.decode(data);
+      return list;
     } on FileSystemException {
       return [];
     }
@@ -69,6 +77,17 @@ class _HomeNoteState extends State<HomeNote> {
       _noteList[id]['status'] = 1; // 归档
     });
     await (await _getLocalFile('noteList')).writeAsString(json.encode(_noteList));
+  }
+
+  Future<Null> _changeViewStyle() async {
+    List list = [];
+    Map map = {};
+    setState(() {
+      viewListStyle = !viewListStyle;
+    });
+    map['viewListStyle'] = viewListStyle;
+    list.add(map);
+    await (await _getLocalFile('viewStyle')).writeAsString(json.encode(list));
   }
 
   // Future<Null> _addNote() async {
@@ -147,11 +166,7 @@ class _HomeNoteState extends State<HomeNote> {
                     ),
                     IconButton(
                       icon: viewListStyle ? Icon(Icons.view_list) : Icon(Icons.view_module),
-                      onPressed: (){
-                        setState((){
-                          viewListStyle = !viewListStyle;
-                        });
-                      }
+                      onPressed: _changeViewStyle
                     ),
                   ],
                 )

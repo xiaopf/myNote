@@ -47,7 +47,8 @@ class _ContentBoxState extends State<ContentBox> {
           deleteNote: widget.deleteNote,
           recoveryNote: widget.recoveryNote,
           updateNoteList: widget.updateNoteList,
-          disable: false
+          disable: false,
+          viewListStyle: widget.viewListStyle
         )
       );
       list.add(SizedBox(height: 8.0),);
@@ -136,7 +137,10 @@ class _ContentBoxState extends State<ContentBox> {
         children: <Widget>[
           Center(
             heightFactor: 2.0,
-            child: Text('暂无内容', style: TextStyle(color: Colors.blueGrey,fontSize: 16.0),)
+            child: Text(
+              widget.status == null ? '点击右下+号添加事件' : '暂无内容',
+              style: TextStyle(color: Colors.blueGrey,fontSize: 16.0),
+            )
           ),
           Divider(
             indent: 20.0,

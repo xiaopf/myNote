@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/animation.dart';
 import 'package:to_do_list/ChooseTags.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Detail extends StatefulWidget {
   Detail({Key key, this.id}) : super(key: key);
@@ -285,22 +286,38 @@ class _DetailState extends State<Detail> with SingleTickerProviderStateMixin{
                 color: Colors.black
               ),
               onPressed: (){
+                Fluttertoast.showToast(
+                    msg: _isFixed ? "已取消固定" : "已固定记事",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIos: 2,
+                );
                 setState((){
                   _isFixed = !_isFixed;
                 });
-                widget.id is int ? _modifyNote() : _addNote();
+                Future.delayed(Duration(milliseconds: 1000), () {
+                  widget.id is int ? _modifyNote() : _addNote();
+                });
               },
             ),
             IconButton(
               icon: Icon(
-                _status == 0 ? Icons.unarchive : Icons.archive,
+                _status == 0 ? Icons.archive : Icons.unarchive,
                 color: Colors.black
               ),
               onPressed: (){
+                Fluttertoast.showToast(
+                    msg: _status == 0 ? "已归档" : "已取消归档",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIos: 2,
+                );
                 setState((){
                   _status = _status == 0 ? 1 : 0; // 完成，归档
                 });
-                widget.id is int ? _modifyNote() : _addNote();
+                Future.delayed(Duration(milliseconds: 1000), () {
+                  widget.id is int ? _modifyNote() : _addNote();
+                });
               },
             ),
             IconButton(
@@ -308,7 +325,17 @@ class _DetailState extends State<Detail> with SingleTickerProviderStateMixin{
                 Icons.save,
                 color: Colors.black
               ),
-              onPressed: widget.id is int ? _modifyNote : _addNote,
+              onPressed: (){
+                Fluttertoast.showToast(
+                    msg: "已保存",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIos: 2,
+                );
+                Future.delayed(Duration(milliseconds: 1000), () {
+                  widget.id is int ? _modifyNote() : _addNote();
+                });
+              },
             )
           ],
         ),

@@ -2,6 +2,8 @@ PODS:
   - Flutter (1.0.0)
   - flutter_share (0.0.1):
     - Flutter
+  - fluttertoast (0.0.2):
+    - Flutter
   - path_provider (0.0.1):
     - Flutter
   - url_launcher (0.0.1):
@@ -14,6 +16,7 @@ PODS:
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_share (from `.symlinks/plugins/flutter_share/ios`)
+  - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
   - url_launcher_macos (from `.symlinks/plugins/url_launcher_macos/ios`)
@@ -24,6 +27,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_share:
     :path: ".symlinks/plugins/flutter_share/ios"
+  fluttertoast:
+    :path: ".symlinks/plugins/fluttertoast/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   url_launcher:
@@ -36,6 +41,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_share: 4be0208963c60b537e6255ed2ce1faae61cd9ac2
+  fluttertoast: b644586ef3b16f67fae9a1f8754cef6b2d6b634b
   path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
   url_launcher: a1c0cc845906122c4784c542523d8cacbded5626
   url_launcher_macos: fd7894421cd39320dce5f292fc99ea9270b2a313

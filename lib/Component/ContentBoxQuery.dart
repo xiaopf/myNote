@@ -41,6 +41,7 @@ class _ContentBoxQueryState extends State<ContentBoxQuery> {
           deleteNote: (){},
           recoveryNote: (){},
           disable: true,
+          viewListStyle: widget.viewListStyle
         )
       );
       list.add(SizedBox(height: 8.0),);

@@ -15,7 +15,7 @@ class OthenNote extends StatefulWidget {
 }
 
 class _OthenNoteState extends State<OthenNote> {
-  bool viewListStyle = true;
+  bool viewListStyle = false;
   List _noteList = [];
   List _tagList = [];
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -26,6 +26,7 @@ class _OthenNoteState extends State<OthenNote> {
     super.initState();
     _updateNoteList();
     _updateTagList();
+    _updateViewStyle();
   }
 
   void _updateNoteList() async{
@@ -40,6 +41,14 @@ class _OthenNoteState extends State<OthenNote> {
         _tagList = list;
     });
   }
+
+  void _updateViewStyle() async{
+    List list = await _readData('viewStyle');
+    setState((){
+      viewListStyle = list.length == 0 ? false : list[0]['viewListStyle'];
+    });
+  }
+
   Future<File> _getLocalFile(fileName) async {
     String dir = (await getApplicationDocumentsDirectory()).path;
     return new File('$dir/$fileName.json');
@@ -54,6 +63,17 @@ class _OthenNoteState extends State<OthenNote> {
     } on FileSystemException {
       return [];
     }
+  }
+
+  Future<Null> _changeViewStyle() async {
+    List list = [];
+    Map map = {};
+    setState(() {
+      viewListStyle = !viewListStyle;
+    });
+    map['viewListStyle'] = viewListStyle;
+    list.add(map);
+    await (await _getLocalFile('viewStyle')).writeAsString(json.encode(list));
   }
   
   Future<Null> _clearDeleted() async {
@@ -87,6 +107,25 @@ class _OthenNoteState extends State<OthenNote> {
     await (await _getLocalFile('noteList')).writeAsString(json.encode(_noteList));
   }
 
+  Future<bool> _onclearDeletedPressed() {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text('确定清空回收站?'),
+        actions: <Widget>[
+          FlatButton(
+              child: Text('取消'),
+              onPressed: () => Navigator.pop(context, false),
+          ),
+          FlatButton(
+              child: Text('确定'),
+              onPressed: () => Navigator.pop(context, true),
+          ),
+        ],
+      )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     _searchController.addListener((){
@@ -115,11 +154,7 @@ class _OthenNoteState extends State<OthenNote> {
               viewListStyle ? Icons.view_list : Icons.view_module,
               color: Colors.black
             ),
-            onPressed: (){
-              setState(() {
-                viewListStyle = !viewListStyle;
-              });
-            },
+            onPressed: _changeViewStyle,
           ),
         ],
       ),
@@ -128,28 +163,35 @@ class _OthenNoteState extends State<OthenNote> {
         padding:EdgeInsets.all(8.0),
         child: Column(
           children: widget.title == '回收站' ? [
-            Container(
-              alignment: Alignment.centerRight,
-              padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-              child: InkWell(
-                onTap: () async{
-                  await _clearDeleted();
-                  // Scaffold.of(context).showSnackBar(
-                  //   SnackBar(
-                  //     content: Text('回收站已清空！'),
-                  //     duration: Duration(milliseconds: 1500)
-                  //   )
-                  // ); 
-                },
-                child: Text(
-                  '清空回收站',
-                  style: TextStyle(
-                    color: Colors.lightBlueAccent,
-                    fontWeight: FontWeight.w500,
-                  )
-                )
-              ),
-            ),
+             Builder(
+              builder: (BuildContext context) {
+                return Container(
+                  alignment: Alignment.centerRight,
+                  padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                  child: InkWell(
+                    onTap: () async{
+                      bool cpnfirm = await _onclearDeletedPressed();
+                      if(cpnfirm){
+                        _clearDeleted();
+                      }
+                      Scaffold.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('回收站已清空！'),
+                          duration: Duration(milliseconds: 1500)
+                        )
+                      ); 
+                    },
+                    child: Text(
+                      '清空回收站',
+                      style: TextStyle(
+                        color: Colors.lightBlueAccent,
+                        fontWeight: FontWeight.w500,
+                      )
+                    )
+                  ),
+                );
+              }
+             ),    
             Expanded(
               child: ContentBox(
                 noteList: _noteList,

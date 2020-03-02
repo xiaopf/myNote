@@ -8,7 +8,7 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
-    new Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(Duration(seconds: 2), () {
       Navigator.of(context).pushNamed('/');
     });
   }

@@ -83,6 +83,13 @@ class _ChooseTagsState extends State<ChooseTags> {
             trailing: Checkbox(
               value: _choosedTagList.contains(i),
               onChanged: (value) {
+                setState(() {
+                if(_choosedTagList.contains(i)){
+                  _choosedTagList.remove(i);
+                } else {
+                  _choosedTagList.add(i);
+                }
+              });
               }
             )
           )

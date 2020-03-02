@@ -12,6 +12,7 @@ class SingleContent extends StatefulWidget {
     this.recoveryNote,
     this.updateNoteList,
     this.disable,
+    this.viewListStyle,
   }) : super(key: key);
   
   final int index;
@@ -21,14 +22,15 @@ class SingleContent extends StatefulWidget {
   final Function deleteNote;
   final Function recoveryNote;
   final Function updateNoteList;
-  bool disable;
+  final bool disable;
+  final bool viewListStyle;
 
   @override
   _SingleContentState createState() => _SingleContentState();
 }
 
 class _SingleContentState extends State<SingleContent> {
-  
+  bool _showTips = false;
   List<Widget> _tagListBuilder(tags) {
     List<Widget> list = [];
     int j = 0;
@@ -66,7 +68,9 @@ class _SingleContentState extends State<SingleContent> {
         alignment: Alignment.centerLeft,
         child: Text(
           widget.note['content'].length == 0 && widget.note['title'].length == 0  ? '空内容' : '${widget.note['content']}',
-          style: TextStyle(fontSize: 16.0)
+          style: TextStyle(fontSize: 16.0),
+          maxLines: widget.viewListStyle ? 4 : 6,
+          overflow: TextOverflow.ellipsis,
         ),
       ),
       Container(
@@ -133,31 +137,70 @@ class _SingleContentState extends State<SingleContent> {
           }
 
         },
-        child: InkWell(
-          onTap:() async{
-            await Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Detail(id: widget.index))
-            );
-            // 更新home页面数据列表
-            widget.updateNoteList();
-          },
-          child: Container(
-            padding: EdgeInsets.all(6.0),
-            alignment: Alignment.centerLeft,
-            decoration: BoxDecoration(
-              // 从数据中读取出来的颜色
-              color: Color(widget.note['bgColor']),
-              border: Border.all(
-                color: widget.note['bgColor'] == 0xFFffffff ? Colors.grey : Color(widget.note['bgColor']),
-                width: 1.0,
-              ),
-              borderRadius: BorderRadius.circular(10.0)
+        child: Stack(
+            textDirection: TextDirection.ltr,
+            children: <Widget>[
+            InkWell(
+              onLongPress: (){
+                setState(() {
+                  _showTips = !_showTips;
+                });
+                Future.delayed(Duration(seconds: 2), () {
+                  setState(() {
+                    _showTips = !_showTips;
+                  });
+                });
+              },
+              onTap:() async{
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Detail(id: widget.index))
+                );
+                // 更新home页面数据列表
+                widget.updateNoteList();
+              },
+              child: Container(
+                constraints: BoxConstraints(
+                  minHeight: widget.viewListStyle ? 110.0 : 0,
+                ),
+                padding: EdgeInsets.all(6.0),
+                alignment: Alignment.topLeft,
+                decoration: BoxDecoration(
+                  // 从数据中读取出来的颜色
+                  color: Color(widget.note['bgColor']),
+                  border: Border.all(
+                    // color: widget.note['bgColor'] == 0xFFffffff ? Colors.grey : Color(widget.note['bgColor']),
+                    color: Colors.grey,
+                    width: 1.50,
+                  ),
+                  borderRadius: BorderRadius.circular(10.0)
+                ),
+                child: Column(
+                  children: _detailContentBuilder(),
+                )
+              )
             ),
-            child: Column(
-              children: _detailContentBuilder(),
-            )
-          )
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: _showTips ? 0 : -25.0,
+              child: Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Color(0xaa000000),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(10.0),
+                    bottomRight: Radius.circular(10.0)
+                  )
+                ),
+                height: 25.0,
+                child: Text(
+                  widget.note['status'] == 0 ? '左滑归档' : '左滑删除,右滑恢复',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          ]
         )
       )
       :
@@ -171,14 +214,18 @@ class _SingleContentState extends State<SingleContent> {
           widget.updateNoteList();
         },
         child: Container(
+          constraints: BoxConstraints(
+            minHeight: widget.viewListStyle ? 110.0 : 0,
+          ),
           padding: EdgeInsets.all(6.0),
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
             // 从数据中读取出来的颜色
             color: Color(widget.note['bgColor']),
             border: Border.all(
-              color: widget.note['bgColor'] == 0xFFffffff ? Colors.grey : Color(widget.note['bgColor']),
-              width: 1.0,
+              // color: widget.note['bgColor'] == 0xFFffffff ? Colors.grey : Color(widget.note['bgColor']),
+              color: Colors.grey,
+              width: 1.50,
             ),
             borderRadius: BorderRadius.circular(10.0)
           ),
