@@ -284,9 +284,12 @@ class _DetailState extends State<Detail> with SingleTickerProviderStateMixin{
             IconButton(
               icon: Icon(
                 _isFixed ? Icons.turned_in : Icons.turned_in_not ,
-                color: Colors.black
+                color: _status == 0 ? Colors.black : Colors.black26,
               ),
               onPressed: (){
+                if(_status != 0){
+                  return false;
+                }
                 Fluttertoast.showToast(
                     msg: _isFixed ? "已取消固定" : "已固定记事",
                     toastLength: Toast.LENGTH_SHORT,

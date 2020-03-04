@@ -26,10 +26,10 @@ class _MyDrawerState extends State<MyDrawer> {
 
   Future<void> shareApp() async {
     await FlutterShare.share(
-      title: '电子记事本',
-      text: '下载电子记事本',
+      title: 'TO-DO记事本',
+      text: '下载TO-DO记事本',
       linkUrl: 'itms-apps://itunes.apple.com/us/app/id1498750095',
-      chooserTitle: 'Example Chooser Title'
+      chooserTitle: 'TO-DO记事本'
     );
   }
   
@@ -70,15 +70,21 @@ class _MyDrawerState extends State<MyDrawer> {
               SizedBox(
                 width: 60.0,
                 height: 60.0,
-                child: CircleAvatar(
-                  backgroundImage: AssetImage('assets/avatar.png'),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    image: DecorationImage(
+                      image: AssetImage('assets/icon.png'),
+                      fit: BoxFit.cover,
+                    )
+                  ),
                 ),
               ),
               SizedBox(
                 width: 20.0,
               ),
               Text(
-                '电子记事本',
+                'TO-DO记事本',
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 20.0,
